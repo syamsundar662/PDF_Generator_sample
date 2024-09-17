@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "880941252796",
+    "firebase_url": "https://realtimedb-55c24-default-rtdb.firebaseio.com",
+    "project_id": "realtimedb-55c24",
+    "storage_bucket": "realtimedb-55c24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880941252796:android:3f4b45dd843a4f7b1250b9",
+        "android_client_info": {
+          "package_name": "com.examplerealtime.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm_z9yVSM1dtu-Uvl9LRnLXC3uDhoLKjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
