@@ -9,9 +9,7 @@ class PdfApiProvider {
   Future<String> createPdf(UserModel user) async {
     final pdf = pw.Document();
 
-    // Load logo image from assets
-    // final logoBytes = (await rootBundle.load('assets/logo.png')).buffer.asUint8List();
-
+    //latest
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
@@ -23,31 +21,17 @@ class PdfApiProvider {
                 pw.Text('Invoice',
                     style: const pw.TextStyle(fontSize: 40),
                     textAlign: pw.TextAlign.center),
-
-                // Logo and company information
-
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    // pw.Image(pw.MemoryImage(logoBytes), height: 80, width: 80),
-                  ],
-                ),
-                // Customer information
                 pw.SizedBox(height: 20),
                 pw.Text('Customer Details:',
                     style: pw.TextStyle(
                         fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                pw.Text('Customer mame: ${user.name}',
+                pw.Text('Name: ${user.name}',
                     style: const pw.TextStyle(fontSize: 15)),
                 pw.Text('Phone: ${user.phone}',
                     style: const pw.TextStyle(fontSize: 15)),
                 pw.Text('Email: ${user.email}',
                     style: const pw.TextStyle(fontSize: 15)),
-                pw.Text('Date: ${DateTime.now().toLocal()}',
-                    style: const pw.TextStyle(fontSize: 15)),
                 pw.SizedBox(height: 20),
-
-                // Table with product details and GST
                 pw.Text('Product Details:',
                     style: pw.TextStyle(
                         fontSize: 18, fontWeight: pw.FontWeight.bold)),
@@ -61,44 +45,35 @@ class PdfApiProvider {
                     'GST (18%)',
                     'Total with GST'
                   ],
-                  data: [
-                    [
-                      user.product.name,
-                      productCount.toString(),
-                      '\$${(user.product.price * productCount).toStringAsFixed(2)}',
-                      '\$${(user.product.price * user.product.gst * productCount).toStringAsFixed(2)}',
-                      '\$${(user.product.getPriceWithGst() * productCount).toStringAsFixed(2)}'
-                    ]
-                  ],
+                  data: List<List<dynamic>>.generate(
+                    user.products.length,
+                    (index) => [
+                      user.products[index].name,
+                      user.quantities[index].toString(),
+                      '\$${(user.products[index].price * user.quantities[index]).toStringAsFixed(2)}',
+                      '\$${(user.products[index].price * user.products[index].gst * user.quantities[index]).toStringAsFixed(2)}',
+                      '\$${(user.products[index].getPriceWithGst() * user.quantities[index]).toStringAsFixed(2)}',
+                    ],
+                  ),
                   border: pw.TableBorder.all(),
                   cellStyle: const pw.TextStyle(fontSize: 12),
                   headerStyle: pw.TextStyle(
                       fontWeight: pw.FontWeight.bold, fontSize: 14),
-                  // headerDecoration: pw.BoxDecoration(color: PdfColor(100, 100, 100)),
                   cellAlignment: pw.Alignment.center,
                 ),
                 pw.SizedBox(height: 20),
-
-                // Total price summary
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.end,
                   children: [
                     pw.Text(
-                        'Total Amount: \$${(user.product.getPriceWithGst() * productCount).toStringAsFixed(2)}',
+                        'Total Amount: \$${user.totalPrice.toStringAsFixed(2)}',
                         style: pw.TextStyle(
                             fontSize: 18, fontWeight: pw.FontWeight.bold)),
                   ],
                 ),
                 pw.SizedBox(height: 10),
-
-                // Footer with date
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.end,
-                  children: [
-                    pw.Text('Thank you for your business!',
-                        style: const pw.TextStyle(fontSize: 12)),
-                  ],
-                ),
+                pw.Text('Thank you for your business!',
+                    style: const pw.TextStyle(fontSize: 12)),
                 pw.Spacer(),
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -121,20 +96,12 @@ class PdfApiProvider {
         },
       ),
     );
-
     // Save PDF file
     Directory? output = await getExternalStorageDirectory();
-    if (output == null) {
-      output = await getApplicationDocumentsDirectory();
-    }
+    output ??= await getApplicationDocumentsDirectory();
     final file =
         File('${output.path}/${user.name.replaceAll(" ", "_")}_invoice.pdf');
     await file.writeAsBytes(await pdf.save());
-    // pdfFile = file;
-    // Open PDF file
-    // await OpenFile.open(file.path);
     return file.path;
   }
-
-//     return file.path; // Return the file path
 }

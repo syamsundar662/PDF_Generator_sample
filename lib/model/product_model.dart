@@ -1,11 +1,14 @@
-
 class Product {
   final String id;
   final String name;
   final double price;
-  final double gst; // Add GST field
+  final double gst;
 
-  Product({required this.id, required this.name, required this.price, this.gst = 0.18}); // Default GST is 18%
+  Product(
+      {required this.id,
+      required this.name,
+      required this.price,
+      this.gst = 0.18}); 
 
   // Convert Product to a Map
   Map<String, dynamic> toMap() {

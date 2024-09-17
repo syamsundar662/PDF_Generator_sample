@@ -5,8 +5,8 @@ class UserModel {
   String name;
   String email;
   String phone;
-  Product product;
-  int quantity;
+  List<Product> products;
+  List<int> quantities;
   double totalPrice;
 
   UserModel({
@@ -14,8 +14,8 @@ class UserModel {
     required this.name,
     required this.email,
     required this.phone,
-    required this.product,
-    required this.quantity,
+    required this.products,
+    required this.quantities,
     required this.totalPrice,
   });
 
@@ -24,8 +24,8 @@ class UserModel {
       'name': name,
       'email': email,
       'phone': phone,
-      'product': product.toMap(),
-      'quantity': quantity,
+      'products': products.map((product) => product.toMap()).toList(),
+      'quantities': quantities,
       'totalPrice': totalPrice,
     };
   }
@@ -36,8 +36,9 @@ class UserModel {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'] ?? '',
-      product: Product.fromMap(map['product'] ?? {}),
-      quantity: map['quantity'] ?? 1,
+      products: List<Product>.from(
+          (map['products'] ?? []).map((item) => Product.fromMap(item))),
+      quantities: List<int>.from(map['quantities'] ?? []),
       totalPrice: map['totalPrice']?.toDouble() ?? 0.0,
     );
   }

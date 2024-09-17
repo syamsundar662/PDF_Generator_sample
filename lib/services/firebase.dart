@@ -33,5 +33,4 @@ class FirebaseService {
   Future<void> updateUser(String id, UserModel user) async {
     await _dbRef.child(id).update(user.toMap());
   }
-  
 }

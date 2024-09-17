@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class PdfPreviewScreen extends StatelessWidget {
   final String filePath;
 
-  const PdfPreviewScreen({Key? key, required this.filePath}) : super(key: key);
+  const PdfPreviewScreen({super.key, required this.filePath});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +20,9 @@ class PdfPreviewScreen extends StatelessWidget {
         swipeHorizontal: true,
         pageSnap: true,
         pageFling: true,
-        onRender: (pages) => print('Rendered $pages pages.'),
-        onError: (error) => print(error.toString()),
-        onPageError: (page, error) => print('$page: $error'),
+        onRender: (pages) => log('Rendered $pages pages.'),
+        onError: (error) => log(error.toString()),
+        onPageError: (page, error) => log('$page: $error'),
       ),
     );
   }

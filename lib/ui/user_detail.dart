@@ -30,7 +30,8 @@ class UserDetails extends StatelessWidget {
               Text('Name: ${user.name}'),
               Text('Email: ${user.email}'),
               Text('Phone: ${user.phone}'),
-              Text('Product: ${user.product.name} (\$${user.product.price})'),
+              Text(
+                  'Product: ${user.products[0].name} (\$${user.products[0].price})'),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
@@ -49,7 +50,6 @@ class UserDetails extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () async {
-
                   String filePath = await PdfApiProvider().createPdf(user);
                   // Generate PDF and open it directly
                   await PdfApiProvider().createPdf(user);
